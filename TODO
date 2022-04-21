@@ -1,0 +1,4 @@
+*) properly comment code and documentation
+*) packaging
+*) tests
+*) implement alternative approach (with two parsers)
