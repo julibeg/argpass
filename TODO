@@ -1,4 +1,1 @@
-[x] implement alternative approach (with two parsers)
-(*) properly comment code and documentation
-(*) packaging
-(*) tests
+(*) properly comment code and add doc strings
