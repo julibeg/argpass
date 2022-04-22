@@ -1,10 +1,15 @@
+![Python tests](https://github.com/julibeg/argpass/workflows/Tests/badge.svg)
 # argpass
-An argparse extension to collect more than one list of command line arguments starting with hyphens
+An argparse extension to collect and pass on command line arguments (potentially starting with hyphens) to other programs.
+
+### TL;DR
+Imagine writing a wrapper script that calls two or more other programs. In many cases, you will want to collect command line arguments for these programs and pass them on unaltered. Using [argparse](https://docs.python.org/3/library/argparse.html), this is not possible. With `argpass`, simply pass `nargs=argpass.NargsOption.COLLECT_UNTIL_NEXT_KNOWN` to `parser.add_argument` and it will collect all strings (regardless of format) until the next known argument.
 
 ### Motivation
 Built-in [argparse](https://docs.python.org/3/library/argparse.html) lacks an option to ignore unrecognized flag strings (usually starting with `-` or `--`), which makes it difficult to collect arguments and pass them on to other programs in some cases. It can be done with `ArgumentParser.parse_known_args` (see [docs](https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_known_args)) which collects all unrecognized arguments, but this only works when just one other program is invoked from our script. Collecting arguments starting with dashes to pass on to more than one program is impossible with argparse, which as caused quite some [frustration](https://github.com/python/cpython/issues/53580). 
 
-For sake of illustration, consider the following example: We have a Python script that takes an input file, a regular argument, and other arguments that should be passed on to another program which is invoked from within our script. We would call our script as follows:
+### An example
+Consider the following example: We have a Python script that takes an input file, a regular argument, and other arguments that should be passed on to another program which is invoked from within our script. We would call our script as follows:
 ```
 python script.py --file example.txt --regular-arg exampleArg --args-to-pass-on --param1 val1 --param2 val2
 ```
@@ -33,7 +38,7 @@ python script.py \
 ```
 cannot be achieved with argparse. 
 
-**argpass** is a thin wrapper around argparse that allows you to do exactly that. When adding another paramater to the parser, simply specify `nargs=NargsOption.COLLECT_UNTIL_NEXT_KNOWN` and `argpass` will collect all strings until the next known argument:
+`argpass` is a thin wrapper around argparse that allows you to do exactly that. When adding another paramater to the parser, simply specify `nargs=NargsOption.COLLECT_UNTIL_NEXT_KNOWN` and `argpass` will collect all strings until the next known argument:
 ```python
 $ cat script.py
 import argpass
