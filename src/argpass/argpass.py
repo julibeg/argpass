@@ -3,6 +3,8 @@ from enum import Enum
 from typing import Any, Optional, Sequence, Dict, Tuple, List
 import sys
 
+SPECIAL_CHARACTERS = list("?!#$%&()*+,-./:;<=>@[]^_{|}")
+
 
 class NargsOption(Enum):
     COLLECT_UNTIL_NEXT_KNOWN = ""
@@ -12,7 +14,15 @@ class ArgumentParser(argparse.ArgumentParser):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.dummy_args: Dict[str, str] = {}
-        self.dummy_prefix_char: str = "?" if "?" not in self.prefix_chars else "-"
+        self.dummy_prefix_char: str
+        for char in SPECIAL_CHARACTERS:
+            if char not in self.prefix_chars:
+                self.dummy_prefix_char = char
+                break
+        else:
+            raise ValueError(
+                "Could not find suitable prefix character for dummy arguments"
+            )
 
     def add_argument(
         self,
@@ -24,7 +34,7 @@ class ArgumentParser(argparse.ArgumentParser):
             and kwargs["nargs"] == NargsOption.COLLECT_UNTIL_NEXT_KNOWN
         ):
             for arg in name_or_flags:
-                dummy_arg = f"?dummy{arg}"
+                dummy_arg = f"{self.dummy_prefix_char}dummy{arg}"
                 self.dummy_args[arg] = dummy_arg
             kwargs["nargs"] = 1
         return super().add_argument(*name_or_flags, **kwargs)

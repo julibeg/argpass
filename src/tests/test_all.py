@@ -16,7 +16,7 @@ parsed_expected = dict(
 )
 unknown_expected = ["--unknown1", "unknown2", "--unknown3"]
 
-parser = argpass.ArgumentParser()
+parser = argpass.ArgumentParser(prefix_chars='?-+_#')
 parser.add_argument("--file")
 parser.add_argument("--regular-arg")
 parser.add_argument(
