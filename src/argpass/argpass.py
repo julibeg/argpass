@@ -1,6 +1,6 @@
 import argparse
 from enum import Enum
-from typing import Any, Optional, Sequence
+from typing import Any, Optional, Sequence, Dict, Tuple, List
 import sys
 
 
@@ -11,7 +11,7 @@ class NargsOption(Enum):
 class ArgumentParser(argparse.ArgumentParser):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        self.dummy_args: dict[str, str] = {}
+        self.dummy_args: Dict[str, str] = {}
         self.dummy_prefix_char: str = "?" if "?" not in self.prefix_chars else "-"
 
     def add_argument(
@@ -29,13 +29,13 @@ class ArgumentParser(argparse.ArgumentParser):
             kwargs["nargs"] = 1
         return super().add_argument(*name_or_flags, **kwargs)
 
-    def parse_known_args(  # type: ignore
+    def parse_known_args(
         self,
         args: Optional[Sequence[str]] = None,
         namespace: Any = None,
-    ) -> tuple[argparse.Namespace, list[str]]:
+    ) -> Tuple[argparse.Namespace, List[str]]:
         args = sys.argv[1:] if args is None else list(args)
-        manipulated_args: list[str] = []
+        manipulated_args: List[str] = []
         for arg in args:
             manipulated_args.append(arg)
             if arg in self.dummy_args:
