@@ -3,7 +3,7 @@
 An argparse extension to collect and pass on command line arguments (potentially starting with hyphens) to other programs.
 
 ## TL;DR:
-Imagine writing a wrapper script that calls two or more other programs. In many cases, you will want to collect command line arguments for these programs and pass them on unaltered. Using [argparse](https://docs.python.org/3/library/argparse.html), this is not possible. With `argpass`, simply pass `nargs=argpass.NargsOption.COLLECT_UNTIL_NEXT_KNOWN` to `parser.add_argument` and it will collect all strings (regardless of format) until the next known argument.
+Imagine writing a wrapper script that calls two or more other programs. In many cases, you will want to collect command line arguments for these programs and pass them on unaltered. With [argparse](https://docs.python.org/3/library/argparse.html) this is not possible. Using `argpass` (this package), however, you can simply pass `nargs=argpass.NargsOption.COLLECT_UNTIL_NEXT_KNOWN` to `parser.add_argument` and it will collect all strings (regardless of format) until the next known argument.
 
 ## Installation
 Install with
